@@ -101,9 +101,13 @@ Stop Media: Safely close the current media and clear the screen.
 ## 📊 Improvements Implemented
 
 🟢 Added Graphical User Interface (GUI) instead of command-line execution.
+
 🟢 Saved Database State: System no longer rebuilds embeddings on every run (Implemented torch.save/load).
+
 🟢 Mean Embedding: Improved accuracy by averaging multiple images per person.
+
 🟢 Video Optimization: Handled inference latency in videos using frame-skipping.
+
 🟢 Object-Oriented Design: Refactored the code into a clean FaceApp class structure.
 
 ---
