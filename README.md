@@ -1,68 +1,57 @@
-# 🧠 Face Recognition System
+# 🧠 Face Recognition System with GUI
 
-A real-time face recognition system built using deep learning.
-The system detects faces from a live camera feed and identifies individuals by comparing facial embeddings.
+A complete, real-time desktop application for face recognition built using deep learning and Python.
+The system features a user-friendly Graphical User Interface (GUI) and can detect and identify individuals from static images, video files, and live webcam feeds.
 
 ---
 
 ## 🚀 Features
 
-* Real-time face detection using MTCNN
-* Face recognition using a pre-trained deep learning model (FaceNet)
-* Supports multiple faces in a single frame
-* Uses embedding comparison for accurate identification
-* Improved accuracy using **mean embedding per person**
+* **Interactive GUI**: Built with Tkinter for seamless user experience.
+* **Multi-Media Support**: Recognize faces in **Images**, **Videos**, and **Webcam** feeds.
+* **Smart Database Loading**: Calculates embeddings once and saves them to `database.pt` for zero-delay startup on future runs.
+* **Prototypical Mean Embeddings**: Uses multiple images per person to calculate a robust "mean embedding," drastically improving accuracy against lighting and pose variations.
+* **Optimized Video Playback**: Implements Frame Skipping techniques for real-time, smooth video processing without lag.
+* **Real-time Face Detection & Recognition**: Powered by MTCNN and FaceNet (InceptionResnetV1).
 
 ---
 
 ## 🧩 How It Works
 
 1. **Face Detection**
+   * Detects faces and extracts bounding boxes using MTCNN.
 
-   * Detects faces in the image using MTCNN
+2. **Feature Extraction**
+   * Converts each cropped face into a **512-dimensional embedding** using a pre-trained ResNet model.
 
-2. **Face Alignment & Cropping**
+3. **Smart Database Creation (One-Time Setup)**
+   * Iterates through the `images/` folder.
+   * Calculates embeddings for all images of a person and computes their **Mean Embedding**.
+   * Saves the database locally as `database.pt`. In future runs, this file is loaded instantly.
 
-   * Extracts and aligns the face for consistency
-
-3. **Feature Extraction**
-
-   * Uses a deep learning model to convert each face into a **512-dimensional embedding**
-
-4. **Database Creation**
-
-   * For each person:
-
-     * Multiple images are processed
-     * Embeddings are generated
-     * The **mean embedding** is calculated and stored
-
-5. **Recognition**
-
-   * For each detected face:
-
-     * Generate embedding
-     * Compare with stored embeddings using Euclidean distance
-     * If distance < threshold → Recognized
-     * Else → Unknown
+4. **Recognition & GUI Display**
+   * Compares incoming faces with the stored database using **Euclidean distance**.
+   * If distance < threshold (e.g., 0.87) → Draws a Green box with the person's name.
+   * If distance > threshold → Draws a Red box labeled **Unknown**.
+   * Converts OpenCV arrays to PIL images to display seamlessly on the Tkinter Canvas.
 
 ---
 
 ## 📁 Project Structure
 
-```
+```text
 Face-Recognition/
 │
-├── images/
-│   ├── Person1/
+├── images/                 # Dataset folder
+│   ├── Member1/
 │   │   ├── img1.jpg
 │   │   ├── img2.jpg
 │   │
-│   ├── Person2/
+│   ├── Member2/
 │       ├── img1.jpg
-│       ├── img2.jpg
 │
-├── main.py
+├── app.py                  # Main application script (GUI + Logic)
+├── database.pt             # Auto-generated saved embeddings database
 ├── README.md
 ```
 
@@ -80,14 +69,22 @@ pip install opencv-python
 
 ## ▶️ Usage
 
-1. Add images for each person inside the `images/` folder
+1. Add folders containing images for each team member inside the images/ directory.
 2. Run the script:
 
 ```bash
-python main.py
+python app.py
 ```
 
-3. Press **Q** to exit
+3. Use the GUI buttons to:
+
+Load Image: Select an image from your device.
+
+Load Video: Select a video file.
+
+Start Webcam: Start live recognition.
+
+Stop Media: Safely close the current media and clear the screen.
 
 ---
 
@@ -103,21 +100,26 @@ python main.py
 
 ## 📊 Improvements Implemented
 
-* Used multiple images per person
-* Computed **mean embedding** for better representation
-* Reduced noise caused by lighting and pose variations
+🟢 Added Graphical User Interface (GUI) instead of command-line execution.
+
+🟢 Saved Database State: System no longer rebuilds embeddings on every run (Implemented torch.save/load).
+
+🟢 Mean Embedding: Improved accuracy by averaging multiple images per person.
+
+🟢 Video Optimization: Handled inference latency in videos using frame-skipping.
+
+🟢 Object-Oriented Design: Refactored the code into a clean FaceApp class structure.
 
 ---
 
 ## 🧠 Future Improvements
 
-* Use cosine similarity instead of Euclidean distance
-* Save/load database instead of rebuilding every run
-* Convert system into a web app (Flask / Streamlit)
-* Add accuracy evaluation metrics
+* Use Cosine Similarity instead of Euclidean distance for even more robust comparison.
+* Add a "Register New Face" button directly inside the GUI using the webcam.
+* Add accuracy evaluation metrics (e.g., Confusion Matrix) on a testing dataset.
 
 ---
 
 ## ⭐ Notes
 
-This project was developed as part of a university assignment and enhanced for better understanding of deep learning and computer vision concepts.
+This project was developed as part of a university assignment and progressively enhanced to include software engineering best practices, GUI development, and real-time computer vision optimizations.
