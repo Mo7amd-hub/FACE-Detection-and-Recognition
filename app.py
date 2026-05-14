@@ -28,7 +28,7 @@ else:
     if os.path.exists(dataset_path):
         for person_name in os.listdir(dataset_path):
             person_folder = os.path.join(dataset_path, person_name)
-            embeddings = [] 
+            embeddings = []
             
             if os.path.isdir(person_folder):
                 for image_name in os.listdir(person_folder):
